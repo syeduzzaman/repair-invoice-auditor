@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151f38">
+  <meta name="description" content="Audit fictional workshop invoices against estimates and approval records.">
+  <title>Repair Invoice Auditor</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>Repair Invoice Auditor</span>
+    </a>
+    <nav aria-label="Workspace">
+      <button id="audit-tab" aria-pressed="true">Audit</button>
+      <button id="benchmark-tab" aria-pressed="false">Benchmark</button>
+    </nav>
+    <span class="environment" id="connection">Demo mode</span>
+  </header>
+  <main>
+    <div id="startup-error" role="alert" hidden></div>
+    <section id="audit-view" aria-labelledby="audit-heading">
+      <header class="page-heading">
+        <h1 id="audit-heading">Invoice audit</h1>
+        <p>Compare a workshop invoice with its approved estimate and trace every exception back to the evidence.</p>
+      </header>
+      <div class="workspace-grid">
+        <aside class="cases-panel" aria-labelledby="cases-heading">
+          <h2 id="cases-heading">Sample cases</h2>
+          <div id="cases" class="cases" aria-label="Fictional repair cases"></div>
+          <p class="muted case-note">Edit the documents to try a variation.</p>
+        </aside>
+        <div class="workbench">
+          <section class="panel controls" aria-labelledby="case-title">
+            <div class="case-heading">
+              <div>
+                <h2 id="case-title">Loading cases…</h2>
+                <p id="case-summary" class="muted"></p>
+              </div>
+            </div>
+            <form id="audit-form">
+              <details class="document-editor" id="editor">
+                <summary>View or edit case documents</summary>
+                <p class="muted">Use one <code>ITEM | REF: B01 | Description | €900.00</code> record per line. The reference is optional.</p>
+                <label for="case-name">Case name</label>
+                <input id="case-name" maxlength="100">
+                <div class="document-grid">
+                  <div><label for="estimate">Approved estimate</label><textarea id="estimate" maxlength="6500" rows="6" spellcheck="false"></textarea></div>
+                  <div><label for="invoice">Submitted invoice</label><textarea id="invoice" maxlength="6500" rows="6" spellcheck="false"></textarea></div>
+                </div>
+                <label for="approvals">Approval records</label>
+                <textarea id="approvals" maxlength="6500" rows="3" spellcheck="false" placeholder="APPROVED | A-101 | REF: B01 | €150.00"></textarea>
+              </details>
+              <div class="run-controls">
+                <div>
+                  <label for="mode">Mode</label>
+                  <select id="mode"><option value="demo">Demo · no API key</option><option value="openai" disabled>OpenAI · requires API key</option></select>
+                </div>
+                <div>
+                  <label for="strategy">Workflow</label>
+                  <select id="strategy"><option value="multi">Multi-agent audit</option><option value="single">Single-agent baseline</option></select>
+                </div>
+                <button class="primary" type="submit" id="run">Run audit <span aria-hidden="true">→</span></button>
+              </div>
+              <p id="mode-note" class="muted mode-note">Demo mode uses local rules to simulate agent decisions.</p>
+            </form>
+          </section>
+          <p id="audit-message" class="status-line" role="status"></p>
+          <div id="report" aria-label="Audit results"></div>
+        </div>
+      </div>
+    </section>
+    <section id="benchmark-view" aria-labelledby="benchmark-heading" hidden>
+      <header class="page-heading">
+        <h1 id="benchmark-heading">Workflow benchmark</h1>
+        <p>Run both workflows against the same five labeled cases.</p>
+      </header>
+      <div class="panel benchmark-controls">
+        <div>
+          <h2>Demo evaluation</h2>
+          <p class="muted">Both workflows use local fixture rules. This compares their behavior on the sample cases. Model evaluations run separately with the OpenAI API.</p>
+        </div>
+        <button class="primary" type="button" id="benchmark-run">Run benchmark <span aria-hidden="true">→</span></button>
+      </div>
+      <p id="benchmark-message" class="status-line" role="status"></p>
+      <div id="benchmark-report" aria-label="Benchmark results"></div>
+    </section>
+  </main>
+</body>
+</html>

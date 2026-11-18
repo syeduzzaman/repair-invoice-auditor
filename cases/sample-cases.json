@@ -1,0 +1,93 @@
+[
+  {
+    "id": "clean",
+    "title": "Straight match",
+    "vehicle": "VW Golf · bumper repair",
+    "summary": "The invoice matches the approved estimate.",
+    "estimate": "ITEM | REF: B01 | Front bumper repair | €900.00\nITEM | REF: P01 | Paint materials and labor | €300.00",
+    "invoice": "ITEM | REF: B01 | Front bumper repair | €900.00\nITEM | REF: P01 | Paint materials and labor | €300.00",
+    "approvals": "",
+    "expected": {
+      "verdict": "clear",
+      "uncoveredCents": 0,
+      "reviewLines": 0,
+      "matched": {
+        "I1": "E1",
+        "I2": "E2"
+      }
+    }
+  },
+  {
+    "id": "partial",
+    "title": "Partial approval",
+    "vehicle": "Audi A3 · bumper repair",
+    "summary": "A €250 supplement has authorization for only €150.",
+    "estimate": "ITEM | REF: B01 | Front bumper repair | €900.00\nITEM | REF: P01 | Paint materials and labor | €300.00",
+    "invoice": "ITEM | REF: B01 | Front bumper repair | €900.00\nITEM | REF: P01 | Paint materials and labor | €300.00\nITEM | REF: S01 | Replace damaged sensor bracket | €250.00",
+    "approvals": "APPROVED | A-101 | REF: S01 | €150.00",
+    "expected": {
+      "verdict": "review",
+      "uncoveredCents": 10000,
+      "reviewLines": 1,
+      "matched": {
+        "I1": "E1",
+        "I2": "E2",
+        "I3": null
+      }
+    }
+  },
+  {
+    "id": "approved",
+    "title": "Approved increase",
+    "vehicle": "Skoda Octavia · door repair",
+    "summary": "A line costs more, and the matching written approval covers the difference.",
+    "estimate": "ITEM | REF: D05 | Replace door skin | €800.00\nITEM | REF: P02 | Paint and blend | €400.00",
+    "invoice": "ITEM | REF: D05 | Replace door skin | €1,050.00\nITEM | REF: P02 | Paint and blend | €400.00",
+    "approvals": "APPROVED | A-200 | REF: D05 | €250.00",
+    "expected": {
+      "verdict": "clear",
+      "uncoveredCents": 0,
+      "reviewLines": 0,
+      "matched": {
+        "I1": "E1",
+        "I2": "E2"
+      }
+    }
+  },
+  {
+    "id": "handoff",
+    "title": "Ambiguous bracket",
+    "vehicle": "Ford Focus · sill repair",
+    "summary": "A separate cross-reference identifies which bracket was invoiced.",
+    "estimate": "ITEM | REF: BR-L | Mounting bracket | €140.00\nITEM | REF: BR-R | Mounting bracket | €160.00\nITEM | REF: LAB | Installation labor | €200.00",
+    "invoice": "ITEM | Mounting bracket | €140.00\nITEM | REF: LAB | Installation labor | €200.00\nNOTE | I1 | REF: BR-L",
+    "approvals": "",
+    "expected": {
+      "verdict": "clear",
+      "uncoveredCents": 0,
+      "reviewLines": 0,
+      "matched": {
+        "I1": "E1",
+        "I2": "E3"
+      }
+    }
+  },
+  {
+    "id": "revoked",
+    "title": "Revoked approval",
+    "vehicle": "BMW 3 Series · trim repair",
+    "summary": "An earlier approval for extra work was revoked in the same case.",
+    "estimate": "ITEM | REF: TR0 | Replace damaged exterior trim | €500.00",
+    "invoice": "ITEM | REF: TR0 | Replace damaged exterior trim | €500.00\nITEM | REF: CL2 | Replace broken clips | €200.00",
+    "approvals": "APPROVED | A-410 | REF: CL2 | €200.00\nREVOKED | A-410 | REF: CL2",
+    "expected": {
+      "verdict": "review",
+      "uncoveredCents": 20000,
+      "reviewLines": 1,
+      "matched": {
+        "I1": "E1",
+        "I2": null
+      }
+    }
+  }
+]

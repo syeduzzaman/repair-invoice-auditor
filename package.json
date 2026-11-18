@@ -1,0 +1,12 @@
+{
+  "name": "repair-invoice-auditor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.mjs",
+    "test": "node --test",
+    "evaluate": "node --env-file-if-exists=.env src/evaluate.mjs"
+  }
+}
